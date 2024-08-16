@@ -34,17 +34,26 @@ for i in range(epochs):
     gradient = np.dot(X.T, (Y_hat - Y)) / n
     w -= alpha * gradient
 
-    if i % 100 == 0:
+    if i % 1000 == 0:
         print(f"MSE {i}: {mse}")
 
-print("Final weights:", w)
 
 Y_prob = 1 / (1 + np.exp(-np.dot(X, w)))
 
 # 8. แสดงผลลัพธ์ในรูปแบบเปอร์เซ็นต์
 percentages = Y_prob * 100
-for idx, percent in enumerate(percentages):
-    print(f"Sample {idx+1}: {percent:.2f}% probability of lung cancer")
+
+num_samples_to_show = 5
+
+# เลือกตัวอย่างสุ่ม
+indices_to_show = np.random.choice(len(percentages), num_samples_to_show, replace=False)
+
+# แสดงผลลัพธ์ของตัวอย่างสุ่ม
+for idx in indices_to_show:
+    percent = percentages[idx]
+    print(f"Probability person {idx+1}: {percent:.2f}%")
+
+print("Final weights:", w)
 
 # Plot Loss over Epochs
 plt.plot(range(epochs), costs)
@@ -54,10 +63,10 @@ plt.ylabel("MSE")
 plt.show()
 
 # Plot Predictions vs Actuals
-plt.scatter(range(len(Y)), Y, color='blue', label='Actual')
-plt.scatter(range(len(Y)), Y_hat, color='red', label='Predicted')
-plt.title("Predictions vs Actuals")
-plt.xlabel("Sample Index")
+plt.scatter(range(len(Y)), Y, color='blue', label='Truth')
+plt.scatter(range(len(Y)), Y_hat, color='red', label='Predict the probability of that person')
+plt.title("Predictions vs Truth")
+plt.xlabel("Sample person")
 plt.ylabel("Lung Cancer (0=No, 1=Yes)")
 plt.legend()
 plt.show()
