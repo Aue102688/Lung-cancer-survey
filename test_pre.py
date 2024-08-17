@@ -7,7 +7,6 @@ from sklearn.preprocessing import StandardScaler
 df = pd.read_csv('survey_lung_cancer.csv')
 
 # 2. การเตรียมข้อมูล
-df['AGE'] = (df['AGE'] - df['AGE'].min()) / (df['AGE'].max() - df['AGE'].min())
 X = df[['GENDER', 'AGE', 'SMOKING', 'YELLOW_FINGERS', 'ANXIETY', 'PEER_PRESSURE', 'CHRONIC DISEASE', 
         'FATIGUE ', 'ALLERGY ', 'WHEEZING', 'ALCOHOL CONSUMING', 'COUGHING', 
         'SHORTNESS OF BREATH', 'SWALLOWING DIFFICULTY', 'CHEST PAIN']]
@@ -46,13 +45,9 @@ for i in range(epochs):
         print(f"MSE {i}: {loss}")
 
 # แสดงผลลัพธ์
-Y_prob = 1 / (1 + np.exp(-np.dot(X, w)))
-
-# 8. แสดงผลลัพธ์ในรูปแบบเปอร์เซ็นต์
+Y_prob = Y_hat
 percentages = Y_prob * 100
-
 num_samples_to_show = 5
-
 # เลือกตัวอย่างสุ่ม
 indices_to_show = np.random.choice(len(percentages), num_samples_to_show, replace=False)
 
@@ -60,7 +55,6 @@ indices_to_show = np.random.choice(len(percentages), num_samples_to_show, replac
 for idx in indices_to_show:
     percent = percentages[idx]
     print(f"Probability person {idx+1}: {percent:.2f}%")
-
 print("Final weights:", w)
 
 # Plot Loss over Epochs
